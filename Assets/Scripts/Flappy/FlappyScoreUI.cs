@@ -52,4 +52,10 @@ public class FlappyScoreUI : FlappyBaseUI
     {
         uiManager.OnClickExit();
     }
+
+    void DrawColor()
+    {
+        //draw color
+
+    }
 }
