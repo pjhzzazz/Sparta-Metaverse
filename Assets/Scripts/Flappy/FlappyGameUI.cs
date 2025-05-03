@@ -24,7 +24,7 @@ public class FlappyGameUI : FlappyBaseUI
     }
 
 
-    public void SetUI(int score, int combo, int maxCombo)
+    public void SetUI(int score)
     {
         scoreText.text = score.ToString();
 

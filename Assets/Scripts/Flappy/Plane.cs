@@ -12,26 +12,35 @@ public class Plane : MonoBehaviour
     public bool isDead = true;
     float deathCooldown = 0f;
 
+    bool gameStarted = false;
+
     bool isFlap = false;
+
+    int bestScore = 0;
+    public int BestScore { get { return bestScore; } }
 
     public bool godMode = false;
 
+    private const string BestScoreKey = "Flappy_BestScore";
     GameManager gameManager;
     FlappyUIManager uiManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 0f;
         gameManager = GameManager.Instance;
+        uiManager = FindObjectOfType<FlappyUIManager>();
 
+        bestScore = PlayerPrefs.GetInt(BestScoreKey, 0);
         animator = GetComponentInChildren<Animator>();
         _rigidbody = GetComponent<Rigidbody2D>();
 
-       if( animator == null )
+        if (animator == null)
         {
             Debug.LogError("Not Founded Animator");
         }
-       if( _rigidbody == null )
+        if (_rigidbody == null)
         {
             Debug.LogError("Not Founded Rigidbody");
         }
@@ -40,18 +49,14 @@ public class Plane : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!gameStarted) return;
         if (isDead)
         {
 
             if (deathCooldown <= 0.0f)
             {
                 gameManager.GameOver();
-                if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0))
-                {
-                    Time.timeScale = 1f;
-                    gameManager.RestartGame();
-                   
-                }
+                uiManager.SetScoreUI();
             }
             else
             {
@@ -81,7 +86,7 @@ public class Plane : MonoBehaviour
 
         _rigidbody.velocity = velocity;
 
-        float angle = Mathf.Clamp((_rigidbody.velocity.y*10f), -90, 90);
+        float angle = Mathf.Clamp((_rigidbody.velocity.y * 10f), -90, 90);
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
@@ -94,5 +99,13 @@ public class Plane : MonoBehaviour
         deathCooldown = 1f;
 
         animator.SetInteger("isDie", 1);
+    }
+
+    public void StartGame()
+    { 
+        isDead = false;
+        deathCooldown = 0f;
+        gameStarted = true;
+
     }
 }

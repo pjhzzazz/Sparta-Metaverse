@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get { return gameManager; } }
 
-    private int currentScore = 0;
+    public int currentScore = 0;
     
     FlappyUIManager uiManager;
 
@@ -21,20 +21,14 @@ public class GameManager : MonoBehaviour
     {
         gameManager = this;
         uiManager = FindObjectOfType<FlappyUIManager>();
-
     }
     
 
     public void GameOver()
     {
-        uiManager.SetRestart();
+        Time.timeScale = 0f;
     }
     
-    public void RestartGame()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
     public void AddScore(int score)
     {
         currentScore += score;

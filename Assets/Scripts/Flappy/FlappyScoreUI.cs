@@ -8,9 +8,7 @@ public class FlappyScoreUI : FlappyBaseUI
 {
 
     TextMeshProUGUI scoreText;
-    TextMeshProUGUI comboText;
     TextMeshProUGUI bestScoreText;
-    TextMeshProUGUI bestComboText;
 
     Button startButton;
     Button exitButton;
@@ -34,12 +32,10 @@ public class FlappyScoreUI : FlappyBaseUI
         exitButton.onClick.AddListener(OnClickExitButton);
     }
 
-    public void SetUI(int score, int combo, int bestScore, int bestCombo)
+    public void SetUI(int score, int bestScore)
     {
         scoreText.text = score.ToString();
-        comboText.text = combo.ToString();
         bestScoreText.text = bestScore.ToString();
-        bestComboText.text = bestCombo.ToString();
     }
     
 

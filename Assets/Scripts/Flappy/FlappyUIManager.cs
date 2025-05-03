@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum FlappyUIState
 {
@@ -19,14 +21,10 @@ public class FlappyUIManager : MonoBehaviour
     private FlappyGameUI gameUI;
     private FlappyScoreUI scoreUI;
 
-    [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private TextMeshProUGUI restartText;
-
     private int bestScore;
 
     private void Awake()
     {
-        // UI 오브젝트 찾아서 초기화
         homeUI = GetComponentInChildren<FlappyHomeUI>(true);
         gameUI = GetComponentInChildren<FlappyGameUI>(true);
         scoreUI = GetComponentInChildren<FlappyScoreUI>(true);
@@ -40,11 +38,6 @@ public class FlappyUIManager : MonoBehaviour
 
     private void Start()
     {
-        if (scoreText == null) Debug.LogError("scoreText is null");
-        if (restartText == null) Debug.LogError("restartText is null");
-
-        restartText?.gameObject.SetActive(false);
-
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
     }
 
@@ -59,8 +52,7 @@ public class FlappyUIManager : MonoBehaviour
 
     public void UpdateScore(int score)
     {
-        if (scoreText != null)
-            scoreText.text = score.ToString();
+        gameUI.SetUI(GameManager.Instance.currentScore);
 
         if (score > bestScore)
         {
@@ -69,34 +61,23 @@ public class FlappyUIManager : MonoBehaviour
         }
     }
 
-    public void SetRestartTextVisible(bool visible)
-    {
-        if (restartText != null)
-            restartText.gameObject.SetActive(visible);
-    }
-
     public void OnClickStartGame()
     {
+        Time.timeScale = 1f;
+
+        FindObjectOfType<Plane>().StartGame(); 
+
         ChangeState(FlappyUIState.Game);
     }
 
-    public void OnClickGoHome()
+    public void SetScoreUI()
     {
-        ChangeState(FlappyUIState.Home);
-    }
-
-    public void OnClickShowScore()
-    {
+        scoreUI.SetUI(GameManager.Instance.currentScore, bestScore);
         ChangeState(FlappyUIState.Score);
     }
 
     internal void OnClickExit()
     {
-        throw new NotImplementedException();
-    }
-
-    internal void SetRestart()
-    {
-        throw new NotImplementedException();
+        SceneManager.LoadScene("MainScene");
     }
 }
