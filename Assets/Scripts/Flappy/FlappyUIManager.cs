@@ -78,6 +78,7 @@ public class FlappyUIManager : MonoBehaviour
 
     internal void OnClickExit()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene("MainScene");
     }
 }

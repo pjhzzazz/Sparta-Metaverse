@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class PlayerController : BaseController
@@ -13,8 +12,8 @@ public class PlayerController : BaseController
         base.Start();
         playerCamera = Camera.main;
     }
-    
-    
+
+
     protected override void HandleAction()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -25,7 +24,7 @@ public class PlayerController : BaseController
         Vector2 worldPos = playerCamera.ScreenToWorldPoint(mousePosition);
         lookDirection = (worldPos - (Vector2)transform.position);
 
-        if(lookDirection.magnitude < .9f)
+        if (lookDirection.magnitude < .9f)
         {
             lookDirection = Vector2.zero;
         }
@@ -34,8 +33,5 @@ public class PlayerController : BaseController
         {
             lookDirection = lookDirection.normalized;
         }
-
-      
     }
-   
 }

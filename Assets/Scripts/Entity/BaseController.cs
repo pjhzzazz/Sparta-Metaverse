@@ -21,6 +21,8 @@ public class BaseController : MonoBehaviour
     private Vector2 knockback = Vector2.zero;
     private float knockbackDuration = 0.0f;
 
+    [SerializeField] private float speed = 5f;
+
     protected virtual void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -40,14 +42,11 @@ public class BaseController : MonoBehaviour
     protected virtual void FixedUpdate()
     {
         Movement(movementDirection);
+
         if(knockbackDuration > 0.0f)
         {
             knockbackDuration -= Time.fixedDeltaTime;
         }
-
-        Vector3 velocity = _rigidbody.velocity;      
-
-        _rigidbody.velocity = velocity;
     }
 
     protected virtual void HandleAction()
@@ -57,7 +56,7 @@ public class BaseController : MonoBehaviour
 
     private void Movement(Vector2 direction)
     {
-        direction = direction * 5;
+        direction = direction * speed;
         if (knockbackDuration > 0.0f)
         {
             direction *= 0.2f;
@@ -83,5 +82,17 @@ public class BaseController : MonoBehaviour
     {
         knockbackDuration = duration;
         knockback = -(other.position - transform.position).normalized * power;
+    }
+
+    public void Mount(Mount mount, bool isMounted)
+    {
+        if (!isMounted)
+        {
+            speed = mount.GetMountSpeed();
+        }
+        else
+        {
+            speed = 5f;
+        }
     }
 }
