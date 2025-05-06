@@ -7,8 +7,6 @@ public class FlappyGameUI : FlappyBaseUI
 {
 
     TextMeshProUGUI scoreText;
-    TextMeshProUGUI comboText;
-    TextMeshProUGUI maxComboText;
 
     protected override FlappyUIState GetFlappyUIState()
     {

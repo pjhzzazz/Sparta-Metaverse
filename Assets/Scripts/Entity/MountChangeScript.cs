@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class MountChangeScript : MonoBehaviour
 {
-    public SpriteRenderer sprite;
+    public SpriteRenderer ChangeMountColors;
+    public Sprite[] Colors;
+
+    public Animator animator;
+    public RuntimeAnimatorController[] contorllers;
+
+    public GameObject MountUI;
     void Start()
     {
         
@@ -14,5 +20,13 @@ public class MountChangeScript : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void MountChange(int index)
+    {
+        ChangeMountColors.sprite = Colors[index];
+        animator.runtimeAnimatorController = contorllers[index];
+
+        MountUI.SetActive(false);
     }
 }

@@ -8,12 +8,18 @@ public class Mount : MonoBehaviour
     private bool isRange;
     private bool isMounted = false;
 
+    public GameObject keyUI;
+
     [SerializeField] private float mountSpeed = 10f;
 
-   
+    public Animator animator;
     void Start()
     {
-        
+        if(isMounted == false)
+        {
+
+            animator.enabled = false;
+        }
     }
 
     
@@ -25,11 +31,16 @@ public class Mount : MonoBehaviour
             player.Mount(this, isMounted);
             isMounted = !isMounted;
         }
-        
-        if(isMounted)
+
+        if (isMounted == true)
         {
             transform.position = new Vector3(player.transform.position.x, player.transform.position.y - 0.7f);
+            animator.enabled = true;
+
+            keyUI.SetActive(false);
         }
+
+        animator.enabled = isMounted;
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -37,6 +48,7 @@ public class Mount : MonoBehaviour
         if(collision.CompareTag("Player"))
         {
             isRange = true;
+            keyUI.SetActive(true);
         }
     }
 
@@ -45,6 +57,7 @@ public class Mount : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             isRange = false;
+            keyUI.SetActive(false);
         }
     }
 

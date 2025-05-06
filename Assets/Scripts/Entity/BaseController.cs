@@ -30,7 +30,7 @@ public class BaseController : MonoBehaviour
 
     protected virtual void Start()
     {
-
+        Time.timeScale = 1f;
     }
 
     protected virtual void Update()
