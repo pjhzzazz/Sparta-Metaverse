@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class hole : MonoBehaviour
+public class MinigameEntrance : MonoBehaviour
 {
     
     void Start()

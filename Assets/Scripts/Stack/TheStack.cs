@@ -11,6 +11,7 @@ public class TheStack : MonoBehaviour
     private const float BlockMovingSpeed = 3.5f;
     private const float ErrorMargin = 0.15f;
 
+    public EmojiManager emojiManager;
     public GameObject originBlock = null;
 
     private Vector3 prevBlockPosition;
@@ -290,15 +291,15 @@ public class TheStack : MonoBehaviour
 
         if (comboCount > maxCombo) maxCombo = comboCount;
 
-        if( (comboCount % 5) == 0)
+        if( (comboCount % 3) == 0)
         {
-            Debug.Log("5 Comobo Success!");
+            Debug.Log("3 Comobo Success!");
             stackBounds += new Vector3(0.5f, 0.5f);
             stackBounds.x =
                 (stackBounds.x > BoundSize) ? BoundSize : stackBounds.x;
             stackBounds.y =
                 (stackBounds.y > BoundSize) ? BoundSize : stackBounds.y;
-
+            emojiManager.RandEmoji();
         }
     }
 

@@ -131,7 +131,7 @@ public class Plane : MonoBehaviour
         uiManager.SetScoreUI();
         Reset();
         isDead = false;
-        gameStarted = true;
+        gameStarted = false;
         Time.timeScale = 0f;
     }
 }

@@ -2481,7 +2481,7 @@ GameObject:
   - component: {fileID: 494787679}
   - component: {fileID: 494787678}
   m_Layer: 0
-  m_Name: hole
+  m_Name: Entrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
