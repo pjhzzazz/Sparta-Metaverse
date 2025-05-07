@@ -20,7 +20,11 @@ public class FlappyUIManager : MonoBehaviour
     private FlappyHomeUI homeUI;
     private FlappyGameUI gameUI;
     private FlappyScoreUI scoreUI;
+    public Plane plane;
 
+    public int currentScore = 0;
+
+    public GameObject[] CountsUI;
     private int bestScore;
 
     private void Awake()
@@ -39,20 +43,28 @@ public class FlappyUIManager : MonoBehaviour
     private void Start()
     {
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
+
+        UpdateScore(0);
     }
 
     public void ChangeState(FlappyUIState newState)
     {
+        if (currentState == newState) return;
         currentState = newState;
 
         homeUI?.SetActive(currentState);
         gameUI?.SetActive(currentState);
         scoreUI?.SetActive(currentState);
+
+        Debug.Log($" - homeUI activeSelf: {homeUI?.gameObject.activeSelf}");
+        Debug.Log($" - gameUI activeSelf: {gameUI?.gameObject.activeSelf}");
+        Debug.Log($" - scoreUI activeSelf: {scoreUI?.gameObject.activeSelf}");
+
     }
 
     public void UpdateScore(int score)
     {
-        gameUI.SetUI(GameManager.Instance.currentScore);
+        gameUI.SetUI(currentScore);
 
         if (score > bestScore)
         {
@@ -63,21 +75,36 @@ public class FlappyUIManager : MonoBehaviour
 
     public void OnClickStartGame()
     {
-        Time.timeScale = 1f;
-
-        FindObjectOfType<Plane>().StartGame(); 
-
         ChangeState(FlappyUIState.Game);
+        StartCoroutine(Count());
+        plane.StartGame();
     }
 
     public void SetScoreUI()
     {
-        scoreUI.SetUI(GameManager.Instance.currentScore, bestScore);
+        scoreUI.SetUI(currentScore, bestScore);
         ChangeState(FlappyUIState.Score);
     }
 
     internal void OnClickExit()
     {
         SceneManager.LoadScene("MainScene");
+    }
+
+    public void AddScore(int score)
+    {
+        currentScore += score;
+        UpdateScore(currentScore);
+
+    }
+    IEnumerator Count()
+    {
+        for (int i = 0; i < CountsUI.Length; i++)
+        {
+            CountsUI[i].SetActive(true);
+            yield return new WaitForSecondsRealtime(1);
+            CountsUI[i].SetActive(false);
+        }
+        Time.timeScale = 1f;
     }
 }

@@ -7,9 +7,12 @@ public class Plane : MonoBehaviour
     Animator animator;
     Rigidbody2D _rigidbody;
 
+    public GameObject gameOverUI;
     public float flapForce = 6f;
     public float forwardSpeed = 3f;
-    public bool isDead = true;
+    public bool isDead = false;
+    private bool isAlive = true;
+
     float deathCooldown = 0f;
 
     bool gameStarted = false;
@@ -22,14 +25,13 @@ public class Plane : MonoBehaviour
     public bool godMode = false;
 
     private const string BestScoreKey = "Flappy_BestScore";
-    GameManager gameManager;
     FlappyUIManager uiManager;
 
+   
     // Start is called before the first frame update
     void Start()
     {
         Time.timeScale = 0f;
-        gameManager = GameManager.Instance;
         uiManager = FindObjectOfType<FlappyUIManager>();
 
         bestScore = PlayerPrefs.GetInt(BestScoreKey, 0);
@@ -52,18 +54,16 @@ public class Plane : MonoBehaviour
         if (!gameStarted) return;
         if (isDead)
         {
-
             if (deathCooldown <= 0.0f)
             {
-                gameManager.GameOver();
-                uiManager.SetScoreUI();
+                StartCoroutine(Delay());
             }
             else
             {
                 deathCooldown -= Time.deltaTime;
             }
         }
-        else
+        if(isAlive)
         {
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
             {
@@ -99,13 +99,39 @@ public class Plane : MonoBehaviour
         deathCooldown = 1f;
 
         animator.SetInteger("isDie", 1);
+        StartCoroutine(DelayAlive());
     }
 
+    IEnumerator DelayAlive()
+    {
+        yield return new WaitForSecondsRealtime(deathCooldown);
+        animator.SetInteger("isDie", 0);
+    }
     public void StartGame()
-    { 
+    {
+        if (gameStarted) return;
+        
         isDead = false;
         deathCooldown = 0f;
         gameStarted = true;
+    }
 
+    public void Reset()
+    {
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.identity;
+        _rigidbody.velocity = Vector2.zero;
+    }
+
+    IEnumerator Delay()
+    {
+        gameOverUI.SetActive(true);
+        yield return new WaitForSecondsRealtime(1);
+        gameOverUI.SetActive(false);
+        uiManager.SetScoreUI();
+        Reset();
+        isDead = false;
+        gameStarted = true;
+        Time.timeScale = 0f;
     }
 }

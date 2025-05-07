@@ -48,4 +48,5 @@ public class FlappyScoreUI : FlappyBaseUI
     {
         uiManager.OnClickExit();
     }
+
 }
